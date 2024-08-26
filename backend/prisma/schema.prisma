@@ -12,3 +12,27 @@ datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
 }
+
+model User {
+  id          String    @id @default(uuid())
+  email       String    @unique
+  username    String    @unique
+  name        String    
+  password    String
+  posts       Post[]    @relation(name: "UserPosts")
+  bookmarks   Post[]    @relation(name: "UserBookmarks")
+  createdAt   DateTime  @default(now())
+}
+
+model Post {
+  id              String    @id @default(uuid())
+  title           String    @db.VarChar(100) 
+  content         String    @db.Text
+  imageUrl        String? 
+  imagePublicId   String?               // easier image updates or deletions via Cloudinary's API if needed.
+  published       Boolean   @default(false)
+  author          User      @relation(name: "UserPosts",fields: [authorId], references: [id])
+  authorId        String
+  bookmarkedBy    User[]    @relation(name: "UserBookmarks")
+  createdAt       DateTime  @default(now())
+}
