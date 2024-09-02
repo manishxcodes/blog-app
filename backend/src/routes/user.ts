@@ -150,7 +150,7 @@ router.post('/signin', async (c) => {
   if(!isExistingUser) {
     return c.json({message: 'Invalid credentials'})
   }
-
+  console.log(isExistingUser.id)
   //verify password
   const hashedPassword = isExistingUser.password
   const plainTextPassword = body.password
