@@ -28,8 +28,6 @@ model Post {
   id              String    @id @default(uuid())
   title           String    @db.VarChar(100) 
   content         String    @db.Text
-  imageUrl        String? 
-  imagePublicId   String?               // easier image updates or deletions via Cloudinary's API if needed.
   published       Boolean   @default(false)
   author          User      @relation(name: "UserPosts",fields: [authorId], references: [id])
   authorId        String
