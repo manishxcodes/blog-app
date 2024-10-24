@@ -143,7 +143,7 @@ router.get('/:id', async (c) => {
 router.delete('/:id', authMiddleware, async (c) => {
   const blogId = c.req.param('id');
   const userId = c.get('userId')
-  console.log(blogId)
+
   // check if id is provided 
   if(!blogId) {
     return c.json({ error: 'Blog Id is required'}, 400)
