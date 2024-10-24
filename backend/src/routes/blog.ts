@@ -46,7 +46,6 @@ router.post('/', authMiddleware, async (c) => {
     return c.json({blog: blog})
 
     } catch (error) {
-    console.error('Error during posting:', error)
     return c.json({ error }, 500)
   } 
 })
