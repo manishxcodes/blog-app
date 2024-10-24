@@ -1,7 +1,7 @@
 import { MiddlewareHandler } from "hono"
 import { verify } from "hono/jwt"
 
-export const authMiddlware:MiddlewareHandler = async (c, next) => {
+export const authMiddleware:MiddlewareHandler = async (c, next) => {
     const authToken = c.req.header('Authorization')
     if(!authToken) {
         c.status(401)
