@@ -5,6 +5,7 @@ import { withAccelerate } from "@prisma/extension-accelerate"
 import { createPost } from "../controllers/createPost"
 import { updatePost } from "../controllers/updatePostController"
 import { fetchAllPost, fetchPost } from "../controllers/fetchPostController"
+import { auth } from "hono/utils/basic-auth"
 
 const router = new Hono<{
   Bindings: {
@@ -29,6 +30,7 @@ router.get('/bulk', authMiddleware, fetchAllPost)
 router.get('/:id', authMiddleware, fetchPost)
 
 // delete post route
+router.delete('/:id', authMiddleware, )
 router.delete('/:id', authMiddleware, async (c) => {
   const blogId = c.req.param('id');
   const userId = c.get('userId')
