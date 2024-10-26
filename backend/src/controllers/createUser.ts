@@ -2,7 +2,7 @@ import { PrismaClient } from "@prisma/client/edge";
 import { withAccelerate } from "@prisma/extension-accelerate";
 import { Context } from "hono";
 import { userSignupSchema } from "../types";
-import bcrypt, { hash } from 'bcryptjs'
+import bcrypt from 'bcryptjs'
 
 export const createUser = async( c: Context ) => {
     try {
