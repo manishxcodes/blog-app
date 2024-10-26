@@ -3,8 +3,6 @@ import { withAccelerate } from "@prisma/extension-accelerate";
 import { Context } from "hono";
 
 export const deletePost = async (c: Context) => {
-
-   
     try {
         const blogId = c.req.param('id');
         const userId = c.get('userId')

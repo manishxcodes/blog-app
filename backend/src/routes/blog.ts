@@ -6,6 +6,7 @@ import { createPost } from "../controllers/createPost"
 import { updatePost } from "../controllers/updatePostController"
 import { fetchAllPost, fetchPost } from "../controllers/fetchPostController"
 import { auth } from "hono/utils/basic-auth"
+import { deletePost } from "../controllers/deletePostController"
 
 const router = new Hono<{
   Bindings: {
@@ -30,50 +31,50 @@ router.get('/bulk', authMiddleware, fetchAllPost)
 router.get('/:id', authMiddleware, fetchPost)
 
 // delete post route
-router.delete('/:id', authMiddleware, )
-router.delete('/:id', authMiddleware, async (c) => {
-  const blogId = c.req.param('id');
-  const userId = c.get('userId')
+router.delete('/:id', authMiddleware,deletePost)
+// router.delete('/:id', authMiddleware, async (c) => {
+//   const blogId = c.req.param('id');
+//   const userId = c.get('userId')
 
-  // check if id is provided 
-  if(!blogId) {
-    return c.json({ error: 'Blog Id is required'}, 400)
-  }
+//   // check if id is provided 
+//   if(!blogId) {
+//     return c.json({ error: 'Blog Id is required'}, 400)
+//   }
 
-  const prisma = new PrismaClient({
-    datasourceUrl: c.env.DATABASE_URL,
-  }).$extends(withAccelerate());
+//   const prisma = new PrismaClient({
+//     datasourceUrl: c.env.DATABASE_URL,
+//   }).$extends(withAccelerate());
 
-  // check if the blog exists and belongs to the current user
-  try {
-    const isExistingBlog = await prisma.post.findUnique({
-      where: {
-        id: blogId,
-      },
-      select: {
-        authorId: true,
-      }
-    });
+//   // check if the blog exists and belongs to the current user
+//   try {
+//     const isExistingBlog = await prisma.post.findUnique({
+//       where: {
+//         id: blogId,
+//       },
+//       select: {
+//         authorId: true,
+//       }
+//     });
     
-    if(!isExistingBlog) {
-      return c.json({ error: "Blog not found"}, 404);
-    }
+//     if(!isExistingBlog) {
+//       return c.json({ error: "Blog not found"}, 404);
+//     }
 
-    // check the blog belong to the authenticated user
-    if( isExistingBlog.authorId !== userId) {
-      return c.json({ error: "Unauthorised to delete this blog"}, 403)
-    }
+//     // check the blog belong to the authenticated user
+//     if( isExistingBlog.authorId !== userId) {
+//       return c.json({ error: "Unauthorised to delete this blog"}, 403)
+//     }
 
-    const deletedPost = await prisma.post.delete({
-      where: {
-        id: blogId
-      }
-    });
-    return c.json({ message: "Blog post deleted successfully", deletedPost}, 200)
-  } catch(err) {
-    return c.json({ error: 'An error occured while deleting the post', err}, 500)
-  }
-})
+//     const deletedPost = await prisma.post.delete({
+//       where: {
+//         id: blogId
+//       }
+//     });
+//     return c.json({ message: "Blog post deleted successfully", deletedPost}, 200)
+//   } catch(err) {
+//     return c.json({ error: 'An error occured while deleting the post', err}, 500)
+//   }
+// })
 
 // test route 
 router.get('/',authMiddleware, async (c) => {
