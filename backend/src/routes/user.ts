@@ -5,7 +5,7 @@ import { userSignupSchema, userSigninSchema } from '../types'
 import bcrypt, { hash } from 'bcryptjs'
 import { sign } from 'hono/jwt'
 import { authMiddleware } from '../middlewares/authMiddleware'
-import { useId } from 'hono/jsx'
+import { createUser } from '../controllers/createUser'
 
 const router = new Hono<{
   Bindings: {
@@ -18,120 +18,55 @@ const router = new Hono<{
 }>()
 
 // signup route
-router.post('/signup', async (c) => {
-  try {
-    const prisma = new PrismaClient({
-      datasourceUrl: c.env.DATABASE_URL,
-    }).$extends(withAccelerate())
+router.post('/signup', createUser)
+// router.post('/signup', async (c) => {
+//   try {
+//     const prisma = new PrismaClient({
+//       datasourceUrl: c.env.DATABASE_URL,
+//     }).$extends(withAccelerate())
 
-    const body = await c.req.json()
+//     const body = await c.req.json()
     
 
-    // Zod validation
-    const response = userSignupSchema.safeParse(body)
-    if (!response.success) {
-      return c.json({ message: 'Incorrect inputs' }, 400)
-    }
+//     // Zod validation
+//     const response = userSignupSchema.safeParse(body)
+//     if (!response.success) {
+//       return c.json({ message: 'Incorrect inputs' }, 400)
+//     }
 
-    // Check if the user already exists
-    const existingUser = await prisma.user.findUnique({
-      where: {
-        email: body.email
-      }
-    })
-    if (existingUser) {
-      return c.json({ message: 'User already exists' }, 403)
-    }
+//     // Check if the user already exists
+//     const existingUser = await prisma.user.findUnique({
+//       where: {
+//         email: body.email
+//       }
+//     })
+//     if (existingUser) {
+//       return c.json({ message: 'User already exists' }, 403)
+//     }
 
-    // Hash password
-    const saltRounds = 10
-    const plainTextPassword = body.password
-    const salt = await bcrypt.genSalt(saltRounds)
-    const hashedPassword = await bcrypt.hash(plainTextPassword, salt)
+//     // Hash password
+//     const saltRounds = 10
+//     const plainTextPassword = body.password
+//     const salt = await bcrypt.genSalt(saltRounds)
+//     const hashedPassword = await bcrypt.hash(plainTextPassword, salt)
 
-    // Create user
-    await prisma.user.create({
-      data: {
-        email: body.email,
-        password: hashedPassword,
-        username: body.username,
-        name: body.name,
-      },
-    })
+//     // Create user
+//     await prisma.user.create({
+//       data: {
+//         email: body.email,
+//         password: hashedPassword,
+//         username: body.username,
+//         name: body.name,
+//       },
+//     })
 
-    return c.json({ message: 'User Created Successfully' })
+//     return c.json({ message: 'User Created Successfully' })
 
-  } catch (error) {
-    console.error('Error during signup:', error)
-    return c.json({ message: 'An error occurred during signup' }, 500)
-  } 
-})
-
-/** 
-other method
-router.post('/signup', async (c) => {
-  let prisma: PrismaClient 
-
-  try {
-    const datasourceUrl = c.env.DATABASE_URL;
-    if (!datasourceUrl) {
-      throw new Error("DATABASE_URL environment variable is not set.");
-    }
-
-    prisma = new PrismaClient({
-      datasources: {
-        db: {
-          url: datasourceUrl,
-        },
-      },
-    }).$extends(withAccelerate());
-
-    const body = await c.req.json();
-
-    // Zod validation
-    const response = userSignupSchema.safeParse(body);
-    if (!response.success) {
-      return c.json({ message: 'Incorrect inputs' }, 400);
-    }
-
-    // Check if the user already exists
-    const existingUser = await prisma.user.findUnique({
-      where: {
-        email: body.email,
-      },
-    });
-    if (existingUser) {
-      return c.json({ message: 'User already exists' }, 400);
-    }
-
-    // Hash passwordn
-    const saltRounds = 10;
-    const plainTextPassword = body.password;
-    const salt = await bcrypt.genSalt(saltRounds);
-    const hashedPassword = await bcrypt.hash(plainTextPassword, salt);
-
-    // Create user
-    await prisma.user.create({
-      data: {
-        email: body.email,
-        password: hashedPassword,
-        username: body.username,
-        name: body.name,
-      },
-    });
-
-    return c.json({ message: 'User Created Successfully' });
-
-  } catch (error) {
-    console.error('Error during signup:', error);
-    return c.json({ message: 'An error occurred during signup' }, 500);
-  } finally {
-    if (prisma) {
-      await prisma.$disconnect();
-    }
-  }
-});
-**/
+//   } catch (error) {
+//     console.error('Error during signup:', error)
+//     return c.json({ message: 'An error occurred during signup' }, 500)
+//   } 
+// })
 
 // signin route
 router.post('/signin', async (c) => {
