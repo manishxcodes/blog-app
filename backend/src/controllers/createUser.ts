@@ -2,7 +2,8 @@ import { PrismaClient } from "@prisma/client/edge";
 import { withAccelerate } from "@prisma/extension-accelerate";
 import { Context } from "hono";
 import { userSignupSchema } from "../types";
-import bcrypt from 'bcryptjs'
+import bcrypt from 'bcryptjs';
+import { PrismaClientError } from "../types";
 
 export const createUser = async( c: Context ) => {
     try {
@@ -47,7 +48,10 @@ export const createUser = async( c: Context ) => {
         return c.json({ message: 'User Created Successfully' })
     
         } catch (error) {
-            console.error('Error during signup:', error)
-            return c.json({ message: 'An error occurred during signup' }, 500)
+            const prismaError = error as  PrismaClientError;
+              if(prismaError.code == "P2002") {
+                return c.json({message: "Username already exists. Please give different username."})
+              }
+              return c.json({ message: 'An error occurred during signup', error: error }, 500)
         } 
 }
