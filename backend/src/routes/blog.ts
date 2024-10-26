@@ -1,8 +1,9 @@
 import { Hono } from "hono"
 import { authMiddleware } from '../middlewares/authMiddleware'
-import { Prisma, PrismaClient } from "@prisma/client/edge"
+import { PrismaClient } from "@prisma/client/edge"
 import { withAccelerate } from "@prisma/extension-accelerate"
 import { createPost } from "../controllers/createPost"
+import { updatePost } from "../controllers/updatePostController"
 
 const router = new Hono<{
   Bindings: {
@@ -18,52 +19,7 @@ const router = new Hono<{
 router.post('/', authMiddleware, createPost)
   
 // update route
-router.put('/', authMiddleware, async (c) => {
-  const prisma = new PrismaClient({
-    datasourceUrl: c.env.DATABASE_URL
-  }).$extends(withAccelerate());
-
-  const formData = await c.req.formData();
-  const title =  formData.get("title") as string;
-  const content = formData.get("content") as string;
-  const blogId = formData.get("blogId") as string;
-
-  // Check if title or content are missing or invalid
-  if (typeof title !== 'string' || typeof content !== 'string' || !title.trim() || !content.trim()) {
-    return c.json({ error: 'Invalid or missing title/content' }, 400);
-  }
-
-  // check if the blogId is correct 
-  const isExistingBlog = await prisma.post.findUnique({
-    where: {
-      id: blogId,
-    }, 
-    select: {
-      id: true,   // will fetch id only to check if it exists
-    }
-  });
-
-  if(isExistingBlog) {
-    const updatedPost = await prisma.post.update({
-      where: {
-        id: blogId,
-        authorId: c.get('userId')
-      }, 
-      data: {
-        title: title,
-        content: content,
-        published: true
-      }
-    })
-
-    return c.json({
-      message: "Succesfully Updated",
-      updatedPost: updatedPost
-    }, 200)
-  }
-
-  return c.json({message: "blog not found"})  
-})
+router.put('/', authMiddleware, updatePost)
   
 // get all post route 
 router.get('/bulk', authMiddleware, async (c) => {
