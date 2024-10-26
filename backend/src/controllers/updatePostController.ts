@@ -33,7 +33,7 @@ export const updatePost = async (c: Context) => {
                 authorId: true
             }
         });
-            console.log(isExistingBlog)
+            
         if(isExistingBlog && (isExistingBlog.authorId == c.get('userId'))) {
             const updatedPost = await prisma.post.update({
                 where: {
