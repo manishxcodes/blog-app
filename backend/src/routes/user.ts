@@ -1,12 +1,10 @@
 import { Hono } from 'hono'
 import { PrismaClient } from '@prisma/client/edge'
 import { withAccelerate } from '@prisma/extension-accelerate'
-import { userSignupSchema, userSigninSchema } from '../types'
-import bcrypt, { hash } from 'bcryptjs'
-import { sign } from 'hono/jwt'
 import { authMiddleware } from '../middlewares/authMiddleware'
 import { createUser } from '../controllers/createUser'
 import { userSigninController } from '../controllers/userSigninController'
+import { addBookmark } from '../controllers/addBookmarkController'
 
 const router = new Hono<{
   Bindings: {
@@ -25,6 +23,8 @@ router.post('/signup', createUser)
 router.post('/signin', userSigninController)
 
 //add bookmark route
+router.post('/bookmarks/:id', authMiddleware, addBookmark)
+/**
 router.post('/bookmarks/:id', authMiddleware, async (c) => {
   const blogId = c.req.param('id');
   const userId = c.get('userId')
@@ -92,6 +92,7 @@ router.post('/bookmarks/:id', authMiddleware, async (c) => {
     return c.json({ error: 'Something went wrong', err}, 500)
   }
 })
+   */
 
 // get bookmark route
 router.get('/bookmarks', authMiddleware, async (c) => {
