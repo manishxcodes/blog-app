@@ -8,6 +8,7 @@ import { addBookmark } from '../controllers/addBookmarkController'
 import { auth } from 'hono/utils/basic-auth'
 import { getBookmark } from '../controllers/getBookmarkController'
 import { removeBookmark } from '../controllers/removeBookmarkController'
+import { fetchUserPost } from '../controllers/fetchPostController'
 
 const router = new Hono<{
   Bindings: {
@@ -35,28 +36,7 @@ router.get('/bookmarks', authMiddleware, getBookmark)
 router.put('/bookmarks/:id', authMiddleware, removeBookmark)
 
 // get user post
-router.get('/myposts', authMiddleware, async (c) => {
-  const userId = c.get('userId');
-
-  const prisma = new PrismaClient({
-    datasourceUrl: c.env.DATABASE_URL,
-  }).$extends(withAccelerate());
-
-  const user = await prisma.user.findUnique({
-    where: {
-      id: userId,
-    },
-    select: {
-      posts: true,
-    }
-  });
-
-  if(!user || user.posts.length == 0) {
-    return c.json({message: "No Posts"})
-  }
-
-  return c.json({Posts: user.posts})
-})
+router.get('/myposts', authMiddleware, fetchUserPost)
 
 router.get('/test', (c) => {
 return c.text('test route')

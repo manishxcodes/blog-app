@@ -42,3 +42,30 @@ export const fetchPost = async (c: Context) => {
         return c.json({error: "Something went wrong. Unable to fetch post", err}, 500)
     }
 }
+
+export const fetchUserPost = async (c: Context) => {
+    try {
+        const userId = c.get('userId');
+
+        const prisma = new PrismaClient({
+            datasourceUrl: c.env.DATABASE_URL,
+        }).$extends(withAccelerate());
+      
+        const user = await prisma.user.findUnique({
+            where: {
+                id: userId,
+            },
+            select: {
+                posts: true,
+            }
+        });
+      
+        if(!user || user.posts.length == 0) {
+            return c.json({message: "No Posts"})
+        }
+      
+        return c.json({Posts: user.posts})
+    } catch(err) {
+        return c.json({error: "Something went wrong. Can't fetch your post", err}, 500)
+    }
+}
