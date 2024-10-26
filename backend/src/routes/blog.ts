@@ -4,6 +4,7 @@ import { PrismaClient } from "@prisma/client/edge"
 import { withAccelerate } from "@prisma/extension-accelerate"
 import { createPost } from "../controllers/createPost"
 import { updatePost } from "../controllers/updatePostController"
+import { fetchAllPost, fetchPost } from "../controllers/fetchPostController"
 
 const router = new Hono<{
   Bindings: {
@@ -22,44 +23,10 @@ router.post('/', authMiddleware, createPost)
 router.put('/', authMiddleware, updatePost)
   
 // get all post route 
-router.get('/bulk', authMiddleware, async (c) => {
-  const prisma = new PrismaClient({
-    datasourceUrl: c.env.DATABASE_URL
-  }).$extends(withAccelerate());
-
-  try {
-    const posts = await prisma.post.findMany()
-    return c.json({posts})
-  } catch(error) {
-    return c.json({error})
-  }
-
-})
+router.get('/bulk', authMiddleware, fetchAllPost)
 
 // get unique post route
-router.get('/:id', async (c) => {
-  const id = c.req.param('id')
-
-  // check if id is provided 
-  if(!id) {
-    return c.json({ error: 'Blog ID is required'}, 400)
-  }
-
-  const prisma = new PrismaClient({
-    datasourceUrl: c.env.DATABASE_URL,
-  }).$extends(withAccelerate());
-
-  const post = await prisma.post.findUnique({
-    where: {
-      id
-    }
-  })
-  if(!post) {
-    return c.json({error: "Something went wrong. Unable to get the post"}, 404)
-  }
-
-  return c.json(post)
-})
+router.get('/:id', authMiddleware, fetchPost)
 
 // delete post route
 router.delete('/:id', authMiddleware, async (c) => {
