@@ -1,4 +1,3 @@
-import { createPostSchema } from "@manishxcode/blogapp-common";
 import { PrismaClient } from "@prisma/client/edge";
 import { withAccelerate } from "@prisma/extension-accelerate";
 import { Context } from "hono";
@@ -14,18 +13,11 @@ export const createPost = async (c: Context) => {
         const content = formData.get('content') as string;
         const published = formData.get('published') === 'true' ? true : false;
 
-        // zod validation 
-        const response = createPostSchema.safeParse({title, content, published})
-        if(!response.success) {
-            // extracting error message from zod error object
-            const errorMessage = response.error.errors.map( err => err.message)
-
-            return c.json({
-                message: "incorrect inputs",
-                error: errorMessage
-            }, 400);
+          // Validate title and content
+        if (typeof title !== 'string' || typeof content !== 'string' || !title.trim() || !content.trim()) {
+            return c.json({ error: 'Invalid or missing title/content' }, 400);
         }
-
+        console.log(title)
         // create post 
         const blog = await prisma.post.create({
             data: {
