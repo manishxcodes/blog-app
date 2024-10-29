@@ -1,7 +1,7 @@
 import { PrismaClient } from "@prisma/client/edge";
 import { withAccelerate } from "@prisma/extension-accelerate";
 import { Context } from "hono";
-import { userSigninSchema } from "../types";
+import { userSigninSchema } from "@manishxcode/blogapp-common";
 import bcrypt from 'bcryptjs';
 import { sign } from "hono/jwt";
 

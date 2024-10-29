@@ -1,7 +1,7 @@
 import { PrismaClient } from "@prisma/client/edge";
 import { withAccelerate } from "@prisma/extension-accelerate";
 import { Context } from "hono";
-import { userSignupSchema } from "../types";
+import { userSignupSchema } from "@manishxcode/blogapp-common";
 import bcrypt from 'bcryptjs';
 import { PrismaClientError } from "../types";
 
