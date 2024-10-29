@@ -1,7 +1,7 @@
 import { PrismaClient } from "@prisma/client/edge";
 import { withAccelerate } from "@prisma/extension-accelerate";
 import { Context } from "hono";
-import { userSignupSchema } from "../types";
+import { SignupSchema, userSignupSchema } from "@manishxcode/blogapp-common";
 import bcrypt from 'bcryptjs';
 import { PrismaClientError } from "../types";
 
@@ -11,7 +11,7 @@ export const createUser = async( c: Context ) => {
           datasourceUrl: c.env.DATABASE_URL,
         }).$extends(withAccelerate())
     
-        const body = await c.req.json()
+        const body = await c.req.json() as SignupSchema;
         
         // Zod validation
         const response = userSignupSchema.safeParse(body)

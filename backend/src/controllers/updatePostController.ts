@@ -1,3 +1,4 @@
+import { updatePostSchema } from "@manishxcode/blogapp-common";
 import { PrismaClient } from "@prisma/client/edge";
 import { withAccelerate } from "@prisma/extension-accelerate";
 import { Context } from "hono";
@@ -18,11 +19,15 @@ export const updatePost = async (c: Context) => {
             return c.json({error: "Blog ID is missing"}, 403);
         }
         
-        // Check if title or content are missing or invalid
-        if (typeof title !== 'string' || typeof content !== 'string' || !title.trim() || !content.trim()) {
-            return c.json({ error: 'Invalid or missing title/content' }, 400);
+        //zod validation
+        const response = updatePostSchema.safeParse({title, content, blogId});
+        if(!response.success) {
+            // extracting error message from zod error object
+            const errorMessage = response.error.errors.map( err => err.message)
+
+            return c.json({error: errorMessage}, 400)
         }
-        
+
         // check if the blogId is correct 
         const isExistingBlog = await prisma.post.findUnique({
             where: {
