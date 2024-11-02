@@ -1,9 +1,12 @@
 import { Button } from "../components/Button"
 import { Navbar } from "../components/Navbar"
+import { useNavigate } from 'react-router-dom'
 
 export const Home = () => {
-  const handleSignup = () => {
-    // handle signup
+  const navigate = useNavigate();
+
+  const navigateToSignup = () => {
+    navigate('/signup');
   }
 
   return (
@@ -17,7 +20,7 @@ export const Home = () => {
                   </h1>
               </div>
               <div className="my-6">
-                <Button label={"Get Started"} onClick={handleSignup} solid={true} />
+                <Button label={"Get Started"} onClick={navigateToSignup} solid={true} />
               </div>
           </div>
       </>

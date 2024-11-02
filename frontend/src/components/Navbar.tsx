@@ -1,16 +1,18 @@
 import { useState } from "react"
 import { crossIcon, githubLogo, hamburgerMenu } from "../assets/assets"
 import { Button } from "./Button"
+import { useNavigate } from "react-router-dom"
 
 export const Navbar = () => {
     const [isClicked, setIsClicked] = useState(false);
+    const navigate = useNavigate();
 
     const handleClickState = () => {
         setIsClicked(!isClicked)
     }
 
     const navigateToSignin = () => {
-        //navigate to signup
+        navigate('/signin')
     }
 
     return (
@@ -52,7 +54,7 @@ export const Navbar = () => {
                                     {crossIcon}
                                 </div>
                                 <ul className="flex flex-col items-center justify-center ">
-                                    <li className="px-6 py-2 text-black hover:underline cursor-pointer">Login</li>
+                                    <li onClick={navigateToSignin} className="px-6 py-2 text-black hover:underline cursor-pointer">Login</li>
                                     <li className="flex px-6 py-2 text-black hover:underline cursor-pointer">Find me on&nbsp;{githubLogo}</li>
                                 </ul>
                             </div>
