@@ -12,7 +12,7 @@ export const Signup = () => {
 
   return (
     <div className='bg-slate-200 w-full h-screen flex justify-center items-center'>
-      <div className='bg-flex flex-col justify-center'>
+      <div className='flex flex-col justify-center'>
         <div className='bg-white w-80 h-max rounded-lg py-4 px-8 shadow-[0_3px_10px_rgb(0,0,0,0.2)]'>
           <Heading label={'Signup'} />
           <SubHeading label={'Enter your information to create account'} />
