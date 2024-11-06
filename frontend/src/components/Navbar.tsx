@@ -20,12 +20,11 @@ export const Navbar = () => {
             <div className="flex justify-center items-center mb-4">
                 <div className="max-w-7xl w-full h-20 flex items-center justify-between px-6 ">
                     <div>
-                        <div>
-                            <h1 className="font-mono font-bold text-3xl">
-                                BlogNest
-                            </h1>
-                        </div>
+                        <h1 className="font-mono font-bold text-3xl">
+                            BlogNest
+                        </h1>
                     </div>
+                
 
                     {/* shows button when screen width is more than 768px i.e medium  */}
                     <div className="hidden md:flex">
@@ -39,17 +38,15 @@ export const Navbar = () => {
 
                     {/* show hamburger menu for screen size less than 768p */}
                     <div className="md:hidden">
-                        <div>
-                            <span onClick={handleClickState} className="text-2xl rounded hover:cursor-pointer ">
-                                {isClicked ? crossIcon : hamburgerMenu}
-                            </span> 
-                        </div>
+                        <div onClick={handleClickState} className="text-2xl rounded hover:cursor-pointer ">
+                            { isClicked && hamburgerMenu }
+                        </div> 
                     </div>
 
                     {/* sidebar */}
                     {
                         isClicked && (
-                            <div className="fixed top-0 right-0 w-52 h-full bg-slate-50 rounded-md font-mono transform transition-transform duration-300 ease-in-out md:hidden">
+                            <div className="fixed top-0 right-0 w-64 h-full bg-slate-50 rounded-md font-mono shadow-[0_3px_10px_rgb(0,0,0,0.2)] transform  transition-transform duration-300 ease-in-out md:hidden">
                                 <div onClick={handleClickState} className="py-6 px-5 flex justify-end">
                                     {crossIcon}
                                 </div>
