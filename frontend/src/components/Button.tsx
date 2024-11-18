@@ -8,7 +8,7 @@ interface ButtonProps {
 
 export const Button: React.FC<ButtonProps> = ({label, onClick, icon, solid}) => {
   return (
-    <div>
+    <div className="w-max text-center">
         <button onClick={onClick} 
           className={
             solid 

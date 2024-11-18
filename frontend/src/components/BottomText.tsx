@@ -8,7 +8,7 @@ interface BottomTextProps  {
 
 export const BottomText: React.FC<BottomTextProps> = ({ label, buttonText, to }) => {
     return (
-      <div className="flex justify-center items-center text-sm">
+      <div className="flex justify-center items-center text-sm mb-3">
         <div className="font-mono text-slate-600">
           {label}
         </div>
