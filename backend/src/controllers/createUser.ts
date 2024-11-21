@@ -16,7 +16,7 @@ export const createUser = async( c: Context ) => {
         // Zod validation
         const response = userSignupSchema.safeParse(body)
         if (!response.success) {
-          return c.json({ message: 'Incorrect inputs' }, 400)
+          return c.json({ message: 'Incorrect credentails. Please enter valid data.' }, 400)
         }
     
         // Check if the user already exists
