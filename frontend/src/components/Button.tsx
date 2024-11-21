@@ -1,7 +1,7 @@
 // interface for button props
 interface ButtonProps {
     label: String;
-    onClick: () => void;
+    onClick?: () => void;
     icon?: React.ReactNode;
     solid: boolean;
 }
