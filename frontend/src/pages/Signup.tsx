@@ -40,11 +40,17 @@ export const Signup = () => {
     try{
       const response = await axios.post(`${domain}/api/v1/user/signup`, postInputs);
       const data = response.data;
-      console.log(data)
-      navigateToSignin(navigate);
-    } catch(err) {
-      setError('An error occurred during sign up. Please try again.');
-      console.error(err);
+      alert(data.message)
+      if( data.message == "User Created Successfully") {
+        navigateToSignin(navigate);
+      }
+    } catch(err: any) {
+      if(err.response  && err.response.data && err.response.data.message) {
+        setError(err.response.data.message)
+        alert(error)
+      } else {
+        setError('An error occurred during sign up. Please try again.');
+      }
     } finally {
       setLoading(false);
     }
@@ -90,11 +96,13 @@ export const Signup = () => {
             onClick={handleSignup} 
             solid={true}/>
           </div>
+
+          {/* show error  */}
+          {
+            error &&
+            <div className="text-red-500 text-center mt-4">{error}</div>
+          }
         </div>
-        {
-          error &&
-           <div className="text-red-500 text-center mt-4">{error}</div>
-        }
       </div>
     </div>
   )
