@@ -34,19 +34,22 @@ export const Navbar = () => {
                         </h1>                
                     </div>
 
-                    <div className="hidden md:flex md:w-96">
-                        <ul className="flex flex-row w-full items-center justify-evenly font-mono text-lg ">
-                            <li onClick={() => navigateToMainPage(navigate)} className="hover:text-slate-700 cursor-pointer">
-                                Home
-                            </li>
-                            <li onClick={() => navigateToMyPosts(navigate)} className="hover:text-slate-700 cursor-pointer">
-                                My Posts
-                            </li>
-                            <li onClick={() => navigateToBookmarks(navigate)} className="hover:text-slate-700 cursor-pointer">
-                                Bookmarks
-                            </li>
-                        </ul>
-                    </div>
+                    { isLoggedIn &&                    
+                        <div className="hidden md:flex md:w-96">
+                            <ul className="flex flex-row w-full items-center justify-evenly font-mono text-lg ">
+                                <li onClick={() => navigateToMainPage(navigate)} className="hover:text-slate-700 cursor-pointer">
+                                    Home
+                                </li>
+                                <li onClick={() => navigateToMyPosts(navigate)} className="hover:text-slate-700 cursor-pointer">
+                                    My Posts
+                                </li>
+                                <li onClick={() => navigateToBookmarks(navigate)} className="hover:text-slate-700 cursor-pointer">
+                                    Bookmarks
+                                </li>
+                            </ul>
+                        </div>
+                    }
+
 
                     {/* shows button when screen width is more than 768px i.e medium  */}
                     <div className="hidden md:flex">
@@ -77,17 +80,23 @@ export const Navbar = () => {
                                 <div onClick={handleClickState} className="py-6 px-5 flex justify-end">
                                     {crossIcon}
                                 </div>
-                                <ul className="flex flex-col items-center justify-center ">
-                                    <li onClick={() => navigateToMainPage(navigate)} className="px-6 py-2 text-black hover:underline cursor-pointer">Home</li>
-                                    <li onClick={() => navigateToMyPosts(navigate)} className="px-6 py-2 text-black hover:underline cursor-pointer">My Posts</li>
-                                    <li onClick={() => navigateToBookmarks(navigate)} className="px-6 py-2 text-black hover:underline cursor-pointer">Bookmarks</li>
+                                <div className="flex flex-col items-center justify-center ">
+                                    {isLoggedIn && 
+                                        <ul className="flex flex-col items-center justify-center">
+                                            <li onClick={() => navigateToMainPage(navigate)} className="px-6 py-2 text-black hover:underline cursor-pointer">Home</li>
+                                            <li onClick={() => navigateToMyPosts(navigate)} className="px-6 py-2 text-black hover:underline cursor-pointer">My Posts</li>
+                                            <li onClick={() => navigateToBookmarks(navigate)} className="px-6 py-2 text-black hover:underline cursor-pointer">Bookmarks</li>
+                                        </ul>
+                                    }
+                                    <ul className="flex flex-col items-center justify-center">
                                     {
                                         isLoggedIn 
                                         ? <li onClick={() => navigateToSignin} className="px-6 py-2 text-black hover:underline cursor-pointer">Logout</li>
                                         : <li onClick={() => navigateToSignin(navigate)} className="px-6 py-2 text-black hover:underline cursor-pointer">Login</li>
                                     }
-                                    <li className="flex px-6 py-2 text-black hover:underline cursor-pointer">Find me on&nbsp;{githubLogo}</li>
-                                </ul>
+                                        <li className="flex px-6 py-2 text-black hover:underline cursor-pointer">Find me on&nbsp;{githubLogo}</li>
+                                    </ul>
+                                </div>
                             </div>
                         )
                     }
