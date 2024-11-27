@@ -8,8 +8,33 @@ export const fetchAllPost = async (c: Context) => {
             datasourceUrl: c.env.DATABASE_URL
         }).$extends(withAccelerate());
         
-        const posts = await prisma.post.findMany()
-        return c.json({posts})
+        const posts = await prisma.post.findMany({
+            select: {
+                id: true,
+                title: true,
+                content: true,
+                published: true,
+                createdAt: true,
+                author: {
+                    select: {
+                        name: true
+                    }
+                }
+            }
+        });
+
+        // formating the posts 
+        const formattedPosts = posts.map(post => ({
+            id: post.id,
+            title: post.title,
+            content: post.content,
+            published: post.published,
+            createdAt: post.createdAt,
+            authorName: post.author.name, // Flatten the author name
+        }));
+
+        
+        return c.json({formattedPosts})
         } catch(err) {
             return c.json({error: "Unable to Fetch Post", err},404)
         }
