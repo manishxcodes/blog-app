@@ -1,8 +1,8 @@
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import axios from "axios";
 import { domain } from "../utils";
 
-interface Blog {
+interface BlogProps {
     id: string
     title: string
     content: string
@@ -13,36 +13,38 @@ interface Blog {
 
 export const useBlogs = () => {
     const [loading, setLoading] = useState(true);
-    const [blogs, setBlogs] = useState<Blog[]>([]);
+    const [blogs, setBlogs] = useState<BlogProps[]>([]);
     const [error, setError] = useState("");
 
-    
     // get the user token 
     const token = sessionStorage.getItem("token");
 
-    useEffect(() => {
-        const fetchBlogs = async () => {
-            try {
-                const response = await axios.get(`${domain}/api/v1/blog/bulk`, {
-                    headers: {
-                        Authorization: `Bearer ${token}`,
-                        'Content-Type': 'application/json',
-                    }
-                });
-                setBlogs(response.data.formattedPosts);
-            } catch(err) {
-                if(axios.isAxiosError(err)) {
-                    setError(err.response?.data?.message || "An Error occured while fetching Blogs")
-                } else {
-                    setError("An unexpected Error occured")
+    const fetchBlogs = useCallback(async () => {
+        try {
+            setLoading(true);
+            const response = await axios.get(`${domain}/api/v1/blog/bulk`, {
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                    'Content-Type': 'application/json',
                 }
-            } finally {
-                setLoading(false)
+            });
+            setBlogs(response.data.formattedPosts || []);
+        } catch(err) {
+            if(axios.isAxiosError(err)) {
+                setError(err.response?.data?.message || "An Error occured while fetching Blogs")
+            } else {
+                setError("An unexpected Error occured")
             }
-        };
+        } finally {
+            setLoading(false)
+        }
+    }, [token]);
 
-        fetchBlogs();
-    }, [])
+    useEffect(() => {
+        if(blogs.length == 0) {
+            fetchBlogs();
+        }
+    }, [blogs, fetchBlogs])
 
-    return { blogs, loading, error };
+    return { blogs, loading, error, fetchBlogs };
 }
