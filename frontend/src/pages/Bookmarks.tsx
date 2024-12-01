@@ -13,13 +13,11 @@ export const Bookmarks = () => {
     )
   }
 
-  console.log("bookmarks: ", blogs);
-
   if(blogs.length == 0) {
     return (
       <div className="w-full h-screen flex flex-col">
         <Navbar />
-        <div className="h-max flex flex-1 justify-center items-center">
+        <div className="flex flex-1 justify-center items-center">
           <div className="text-xl font-bold font-mono">You don't have any bookmarks</div>
         </div>
       </div>
@@ -36,8 +34,8 @@ export const Bookmarks = () => {
     <div>
       <Navbar />
       <section className="flex justify-center items-center">
-          <div className=" h-screen max-w-7xl w-full px-6">
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-x-2 gap-y-2">
+          <div className=" h-screen max-w-6xl w-full px-6">
+            <div className="grid grid-cols-1  gap-y-3">
               { 
                 blogs.map((blog) => (
                   <BlogCard key={blog.id} 
