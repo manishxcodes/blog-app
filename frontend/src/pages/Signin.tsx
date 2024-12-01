@@ -40,10 +40,13 @@ export const Signin = () => {
     try {
       const response = await axios.post(`${domain}/api/v1/user/signin`, postInputs);
       const data = response.data;
-      navigate('/blogs')
+      if(data.token) {
+        navigate('/blogs');
+        sessionStorage.setItem("token", data.token);
+        dispatch(authActions.login(data.token))
+      }
       // storing token 
-      sessionStorage.setItem("token", data.token);
-      dispatch(authActions.login(data.token))
+      
     } catch(err: any) {
       // catch backend errors
       if(err.response && err.response.data && err.response.data.message) {
