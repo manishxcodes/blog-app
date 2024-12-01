@@ -81,7 +81,19 @@ export const fetchUserPost = async (c: Context) => {
                 id: userId,
             },
             select: {
-                posts: true,
+                posts: {
+                    select: {
+                        id: true,
+                        title: true,
+                        content: true, published: true,
+                        createdAt: true,
+                        author: {
+                            select: {
+                                name: true
+                            }
+                        }
+                    }
+                },
             }
         });
       
