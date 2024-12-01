@@ -2,7 +2,7 @@ import axios from "axios";
 import { useEffect, useState } from "react"
 import { domain } from "../utils";
 
-interface Blog {
+interface BookmarkProps {
   id: string
   title: string
   content: string
@@ -11,7 +11,7 @@ interface Blog {
 }
 
 export const useBookmarks = () => {
-  const [blogs, setBlogs] = useState<Blog[]>([]);
+  const [blogs, setBlogs] = useState<BookmarkProps[]>([]);
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(true);
 
@@ -35,7 +35,7 @@ export const useBookmarks = () => {
         
       } catch(err) {
         if(axios.isAxiosError(err)) {
-          setError(err.response?.data?.message || "An Error occupied while fetching Blogs");
+          setError(err.response?.data?.message || "An Error occupied while fetching Bookmarks");
         } else {
           setError("An unexpected Error occured");
         }
