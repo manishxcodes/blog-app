@@ -1,7 +1,7 @@
 import { useState } from "react"
 import { crossIcon, githubLogo, hamburgerMenu } from "../assets/assets"
 import { Button } from "./Button"
-import { useNavigate } from "react-router-dom"
+import { Link, useNavigate } from "react-router-dom"
 import { navigateToBookmarks, navigateToMainPage, navigateToMyPosts, navigateToSignin } from "../helper/navigateUtils"
 import { useSelector } from "react-redux"
 import { useDispatch } from "react-redux"
@@ -20,6 +20,7 @@ export const Navbar = () => {
     }
 
     const hanldeLogout = () => {
+        sessionStorage.removeItem("token");
         dispatch(authActions.logout());
         navigate('/');
     }
@@ -37,14 +38,14 @@ export const Navbar = () => {
                     { isLoggedIn &&                    
                         <div className="hidden md:flex md:w-96">
                             <ul className="flex flex-row w-full items-center justify-evenly font-mono text-lg ">
-                                <li onClick={() => navigateToMainPage(navigate)} className="hover:text-slate-700 cursor-pointer">
-                                    Home
+                                <li className="hover:text-slate-700 cursor-pointer">
+                                    <Link to="/blogs">Home</Link>
                                 </li>
-                                <li onClick={() => navigateToMyPosts(navigate)} className="hover:text-slate-700 cursor-pointer">
-                                    My Posts
+                                <li className="hover:text-slate-700 cursor-pointer">
+                                    <Link to="/myposts">My Posts</Link>
                                 </li>
-                                <li onClick={() => navigateToBookmarks(navigate)} className="hover:text-slate-700 cursor-pointer">
-                                    Bookmarks
+                                <li className="hover:text-slate-700 cursor-pointer">
+                                    <Link to="/bookmarks">Bookmarks</Link>
                                 </li>
                             </ul>
                         </div>
@@ -83,15 +84,21 @@ export const Navbar = () => {
                                 <div className="flex flex-col items-center justify-center ">
                                     {isLoggedIn && 
                                         <ul className="flex flex-col items-center justify-center">
-                                            <li onClick={() => navigateToMainPage(navigate)} className="px-6 py-2 text-black hover:underline cursor-pointer">Home</li>
-                                            <li onClick={() => navigateToMyPosts(navigate)} className="px-6 py-2 text-black hover:underline cursor-pointer">My Posts</li>
-                                            <li onClick={() => navigateToBookmarks(navigate)} className="px-6 py-2 text-black hover:underline cursor-pointer">Bookmarks</li>
+                                            <li onClick={() => navigateToMainPage(navigate)} className="px-6 py-2 text-black hover:underline cursor-pointer">
+                                                <Link to="/blogs">Home</Link>
+                                            </li>
+                                            <li onClick={() => navigateToMyPosts(navigate)} className="px-6 py-2 text-black hover:underline cursor-pointer">
+                                                <Link to="/myposts">My Posts</Link>
+                                            </li>
+                                            <li onClick={() => navigateToBookmarks(navigate)} className="px-6 py-2 text-black hover:underline cursor-pointer">
+                                                <Link to="bookmarks">Bookmarks</Link>
+                                            </li>
                                         </ul>
                                     }
                                     <ul className="flex flex-col items-center justify-center">
                                     {
                                         isLoggedIn 
-                                        ? <li onClick={() => navigateToSignin} className="px-6 py-2 text-black hover:underline cursor-pointer">Logout</li>
+                                        ? <li onClick={hanldeLogout} className="px-6 py-2 text-black hover:underline cursor-pointer">Logout</li>
                                         : <li onClick={() => navigateToSignin(navigate)} className="px-6 py-2 text-black hover:underline cursor-pointer">Login</li>
                                     }
                                         <li className="flex px-6 py-2 text-black hover:underline cursor-pointer">Find me on&nbsp;{githubLogo}</li>
