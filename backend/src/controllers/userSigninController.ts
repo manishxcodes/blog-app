@@ -17,7 +17,7 @@ export const userSigninController = async (c: Context) => {
         // validation using zod 
         const response = userSigninSchema.safeParse(body)
         if(!response.success) {
-            return c.json({message: "Invalid credentials"})
+            return c.json({message: "Invalid credentials"}, 400)
         }
         
         // verify user 
@@ -27,7 +27,7 @@ export const userSigninController = async (c: Context) => {
             }
         })
         if(!isExistingUser) {
-            return c.json({message: 'Invalid credentials'})
+            return c.json({message: 'Invalid credentials'}, 401)
         }
         
         //verify password
@@ -39,7 +39,7 @@ export const userSigninController = async (c: Context) => {
             const token = await sign({id: isExistingUser.id}, c.env.JWT_SECRET)
             return c.json({token: token}, 200)
         } else {
-            return c.json({message: "Invalid credentials"})
+            return c.json({message: "Invalid credentials"}, 401)
         }
     } catch(err) {
         return c.json({error: 'Error while logging in', err}, 500)

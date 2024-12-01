@@ -86,7 +86,7 @@ export const fetchUserPost = async (c: Context) => {
         });
       
         if(!user || user.posts.length == 0) {
-            return c.json({message: "No Posts"})
+            return c.json({message: "No Posts"}, 204)
         }
       
         return c.json({Posts: user.posts})

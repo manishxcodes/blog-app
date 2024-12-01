@@ -15,15 +15,27 @@ export const getBookmark = async (c: Context) => {
             id: userId,
           },
           select: {
-            bookmarks: true,
+            bookmarks: {
+              select: {
+                id: true,
+                title: true,
+                content: true,
+                author: {
+                  select: {
+                    name: true
+                  },
+                },
+                createdAt: true
+              }
+            }
           }
         });
       
         if(!user || user.bookmarks.length == 0) {
-          return c.json({message: "No bookmarks"})
+          return c.json({message: "No bookmarks"}, 204)
         }
       
-        return c.json({bookmarks: user.bookmarks.map((bookmark) => bookmark.id)});  
+        return c.json({bookmarks: user.bookmarks});  
       
     } catch(err) {
         return c.json({error: "something went wrong", err}, 500)
