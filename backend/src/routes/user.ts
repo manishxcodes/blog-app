@@ -9,6 +9,7 @@ import { auth } from 'hono/utils/basic-auth'
 import { getBookmark } from '../controllers/getBookmarkController'
 import { removeBookmark } from '../controllers/removeBookmarkController'
 import { fetchUserPost } from '../controllers/fetchPostController'
+import { isAlreadyBookmark } from '../controllers/isAlreadyBookmark'
 
 const router = new Hono<{
   Bindings: {
@@ -34,6 +35,9 @@ router.get('/bookmarks', authMiddleware, getBookmark)
 
 // delete bookmark route
 router.put('/bookmarks/:id', authMiddleware, removeBookmark)
+
+// check if it's already bookmarked
+router.get('/bookmarks/:id/check', authMiddleware, isAlreadyBookmark)
 
 // get user post
 router.get('/myposts', authMiddleware, fetchUserPost)
