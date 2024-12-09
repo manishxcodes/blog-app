@@ -9,6 +9,7 @@ interface BlogProps {
     published: string
     authorName: string
     createdAt: string
+    isBookmarked: boolean
 }
 
 export const useBlogs = () => {
