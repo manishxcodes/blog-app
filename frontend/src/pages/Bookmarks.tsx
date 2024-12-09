@@ -12,6 +12,7 @@ export const Bookmarks = () => {
       <Loader />
     )
   }
+  console.log(blogs)
 
   if(blogs.length == 0) {
     return (
