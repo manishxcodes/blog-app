@@ -7,6 +7,8 @@ export const fetchAllPost = async (c: Context) => {
         const prisma = new PrismaClient({
             datasourceUrl: c.env.DATABASE_URL
         }).$extends(withAccelerate());
+
+        const userId = c.get('userId');
         
         const posts = await prisma.post.findMany({
             select: {
@@ -19,6 +21,12 @@ export const fetchAllPost = async (c: Context) => {
                     select: {
                         name: true
                     }
+                },
+                bookmarkedBy: {
+                    where: {
+                        id: userId
+                    },
+                    select: {id: true}
                 }
             }
         });
@@ -30,7 +38,9 @@ export const fetchAllPost = async (c: Context) => {
             content: post.content,
             published: post.published,
             createdAt: post.createdAt,
-            authorName: post.author.name, // Flatten the author name
+            authorName: post.author.name,    // Flatten the author name
+            isBookmarked: post.bookmarkedBy.length > 0 // isBookmarked contains userId of the user who have bookmarked the post in an array in this case it contains only one userId of the current user due to the query `where: {id: userId}` if lenght > 0. that means our user has bookmarked it.
+          
         }));
 
         
