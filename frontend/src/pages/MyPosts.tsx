@@ -1,11 +1,17 @@
-import { BlogCard } from "../components/BlogCard";
+import { MyPostCard } from "../components/MyPostCard";
 import { ErrorMessage } from "../components/ErrorMessage";
 import { Loader } from "../components/Loader";
 import { Navbar } from "../components/Navbar";
 import { useMyBlogs } from "../hooks/useMyBlogs"
+import axios from "axios";
+import { domain } from "../utils";
+import { toast } from "react-toastify";
+import { useNavigate } from "react-router-dom";
 
 export const MyPosts = () => {
-  const { loading, error, blogs} = useMyBlogs();
+  const { loading, error, blogs, fetchBlogs} = useMyBlogs();
+  const token = sessionStorage.getItem("token");
+  const navigate = useNavigate();
 
   if(loading) {
     return (
@@ -37,6 +43,39 @@ export const MyPosts = () => {
     )
   }
 
+  const deletePost = async (id: string) => {
+    console.log("dlelete button clicked", id);
+    try {
+      const response = await axios.delete(`${domain}/api/v1/blog/${id}`,  {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          'Content-Type': 'application/json'
+        }
+      })
+      console.log(response);
+
+      if(response.status == 404) {
+        toast.error("Blog doesnot exist");
+      }
+
+      if(response.status == 200) {
+        toast.success("post deleted succesfully");
+        fetchBlogs();
+
+      }
+    } catch(err) {
+      if(axios.isAxiosError(err)) {
+        toast.error(err.response?.data?.message || "An Error occured. try again");
+    } else {
+        toast.error("An unexpected Error occured");
+    }
+    }
+  }
+
+  const handleReadMore = (id: string) => {
+    navigate(`/blog/${id}`);
+  }
+
   return (
     <div>
       <Navbar />
@@ -45,11 +84,15 @@ export const MyPosts = () => {
           <div className="grid grid-cols-1 gap-y-3">
             {
               blogs.map((blog) => (
-                <BlogCard key={blog.id}
+                <MyPostCard key={blog.id}
                   authorName={blog.author.name}
                   title={blog.title}
                   content={blog.content}
-                  createdAt={new Date(blog.createdAt).toLocaleDateString()} />
+                  createdAt={new Date(blog.createdAt).toLocaleDateString()}
+                  onClick = {
+                    () => deletePost(blog.id)} 
+                  onCardClick={() => handleReadMore(blog.id)}
+                  onClickReadMore={() => handleReadMore(blog.id)} />
               ))
             }
           </div>
