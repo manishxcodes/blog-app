@@ -3,9 +3,16 @@ import { Loader } from "../components/Loader";
 import { Navbar } from "../components/Navbar";
 import { useBookmarks } from "../hooks/useBookmarks";
 import { BlogCard } from "../components/BlogCard";
+import  axios from "axios";
+import { domain } from "../utils";
+import { toast } from "react-toastify";
+import { useNavigate } from "react-router-dom";
+
 
 export const Bookmarks = () => {
-  const { blogs, loading, error } = useBookmarks();
+  const { blogs, loading, error, fetchBlogs } = useBookmarks();
+  const token = sessionStorage.getItem("token");
+  const navigate = useNavigate();
 
   if(loading) {
     return (
@@ -31,6 +38,39 @@ export const Bookmarks = () => {
     )
   }
 
+  
+  const removeBookmark = async (id: string) => {
+    try {
+      const resposne = await axios.put(`${domain}/api/v1/user/bookmarks/${id}`, {}, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          'Content-Type': 'application/json'
+        }
+      });
+
+      if(resposne.status == 200) {
+        toast.success("removed successfully!");
+        fetchBlogs();
+
+      }
+
+      if(resposne.status == 400) {
+        toast.error("Post is not bookmarked. cannot remove")
+      }
+
+    } catch(err) {
+      if(axios.isAxiosError(err)) {
+        toast.error(err.response?.data?.message || "An Error occured. try again");
+    } else {
+        toast.error("An unexpected Error occured");
+    }
+    } 
+  }
+
+  const handleReadMore = (id: string) => {
+    navigate(`/blog/${id}`);
+  }
+
   return (
     <div>
       <Navbar />
@@ -43,7 +83,11 @@ export const Bookmarks = () => {
                     authorName={blog.author.name}
                     title={blog.title}
                     content={blog.content}
-                    createdAt={new Date(blog.createdAt).toLocaleDateString()} />
+                    createdAt={new Date(blog.createdAt).toLocaleDateString()} 
+                    isAlreadyBookmark= {true}
+                    onBookmarkClick=  {() =>  removeBookmark(blog.id)}
+                    onCardClick={() => handleReadMore(blog.id)}
+                     />
                 ))
               }
           </div>
