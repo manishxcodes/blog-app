@@ -50,34 +50,6 @@ export const fetchAllPost = async (c: Context) => {
         }
 } 
 
-export const fetchPost = async (c: Context) => {
-    try {
-        const id = c.req.param('id')
-
-        // check if id is provided 
-        if(!id) {
-          return c.json({ error: 'Blog ID is required'}, 400)
-        }
-      
-        const prisma = new PrismaClient({
-            datasourceUrl: c.env.DATABASE_URL,
-        }).$extends(withAccelerate());
-      
-        const post = await prisma.post.findUnique({
-            where: {
-                id
-            }
-        })
-        if(!post) {
-            return c.json({error: "Something went wrong. Unable to get the post"}, 404)
-        }
-      
-        return c.json({post: post}, 200)
-    } catch(err) {
-        return c.json({error: "Something went wrong. Unable to fetch post", err}, 500)
-    }
-}
-
 export const fetchUserPost = async (c: Context) => {
     try {
         const userId = c.get('userId');
@@ -114,5 +86,44 @@ export const fetchUserPost = async (c: Context) => {
         return c.json({Posts: user.posts})
     } catch(err) {
         return c.json({error: "Something went wrong. Can't fetch your post", err}, 500)
+    }
+}
+
+export const fetchPost = async (c: Context) => {
+    try {
+        const id = c.req.param('id')
+
+        // check if id is provided 
+        if(!id) {
+          return c.json({ error: 'Blog ID is required'}, 400)
+        }
+      
+        const prisma = new PrismaClient({
+            datasourceUrl: c.env.DATABASE_URL,
+        }).$extends(withAccelerate());
+      
+        const post = await prisma.post.findUnique({
+            where: {
+                id
+            }, 
+            select: {
+                id: true,
+                title: true,
+                content: true,
+                createdAt: true,
+                author: {
+                    select: {
+                        name: true
+                    }
+                }
+            }
+        })
+        if(!post) {
+            return c.json({error: "Something went wrong. Unable to get the post"}, 404)
+        }
+      
+        return c.json({post: post}, 200)
+    } catch(err) {
+        return c.json({error: "Something went wrong. Unable to fetch post", err}, 500)
     }
 }
