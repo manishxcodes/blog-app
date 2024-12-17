@@ -18,35 +18,35 @@ export const useMyBlogs  = () => {
 
     const token = sessionStorage.getItem("token");
 
-    useEffect(() => {
-        const fetchBlogs = async () => {
-            try {
-                const response = await axios.get(`${domain}/api/v1/user/myposts`,{
-                    headers: {
-                        Authorization: `Bearer ${token}`,
-                        'Content-Type': 'application/json'
-                    }
-                });
-
-                if(response.status == 204) {
-                    setBlogs([]);
-                } else {
-                    setBlogs(response.data.Posts)
+    const fetchBlogs = async () => {
+        try {
+            const response = await axios.get(`${domain}/api/v1/user/myposts`,{
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                    'Content-Type': 'application/json'
                 }
+            });
 
-            } catch(err) {
-                if(axios.isAxiosError(err)) {
-                    setError(err.response?.data?.message || "An error occured while fetching Blogs");
-                } else {
-                    setError("An unexpected Error occured");
-                }
-            } finally {
-                setLoading(false);
+            if(response.status == 204) {
+                setBlogs([]);
+            } else {
+                setBlogs(response.data.Posts)
             }
-        };
 
+        } catch(err) {
+            if(axios.isAxiosError(err)) {
+                setError(err.response?.data?.message || "An error occured while fetching Blogs");
+            } else {
+                setError("An unexpected Error occured");
+            }
+        } finally {
+            setLoading(false);
+        }
+    };
+    useEffect(() => {
         fetchBlogs();
     }, [])
-
-    return { blogs, error, loading};
+        
+    return { blogs, error, loading, fetchBlogs};
 }
+

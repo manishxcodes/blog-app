@@ -17,35 +17,35 @@ export const useBookmarks = () => {
 
   const token = sessionStorage.getItem("token");
 
-  useEffect(() => {
-    const fetchBlogs = async () => {
-      try {
-        const response = await axios.get(`${domain}/api/v1/user/bookmarks`, {
-          headers: {
-            Authorization: `Bearer ${token}`,
-            'Content-Type': 'application/json'
-          }
-        });
+  const fetchBlogs = async () => {
+    try {
+      const response = await axios.get(`${domain}/api/v1/user/bookmarks`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          'Content-Type': 'application/json'
+        }
+      });
 
-        if(response.status == 204) {
-          setBlogs([]);  // set blogs as empty array as there is no bookmarks
-        } else {
-          setBlogs(response.data.bookmarks);
-        }
-        
-      } catch(err) {
-        if(axios.isAxiosError(err)) {
-          setError(err.response?.data?.message || "An Error occupied while fetching Bookmarks");
-        } else {
-          setError("An unexpected Error occured");
-        }
-      } finally {
-        setLoading(false)
+      if(response.status == 204) {
+        setBlogs([]);  // set blogs as empty array as there is no bookmarks
+      } else {
+        setBlogs(response.data.bookmarks);
       }
-    };
+      
+    } catch(err) {
+      if(axios.isAxiosError(err)) {
+        setError(err.response?.data?.message || "An Error occupied while fetching Bookmarks");
+      } else {
+        setError("An unexpected Error occured");
+      }
+    } finally {
+      setLoading(false)
+    }
+  };
 
+  useEffect(() => {
     fetchBlogs();
   }, [])
-
-  return { blogs, loading, error }
+    
+  return { blogs, loading, error, fetchBlogs }
 }
