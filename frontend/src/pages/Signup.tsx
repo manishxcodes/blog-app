@@ -9,6 +9,7 @@ import { domain } from '../utils';
 import { SignupSchema } from '@manishxcode/blogapp-common';
 import { navigateToSignin } from '../helper/navigateUtils';
 import { useNavigate } from 'react-router-dom';
+import { toast } from 'react-toastify';
 
 export const Signup = () => {
   const navigate = useNavigate();
@@ -40,14 +41,14 @@ export const Signup = () => {
     try{
       const response = await axios.post(`${domain}/api/v1/user/signup`, postInputs);
       const data = response.data;
-      alert(data.message)
       if( data.message == "User Created Successfully") {
+        toast(data.message);
         navigateToSignin(navigate);
       }
     } catch(err: any) {
       if(err.response  && err.response.data && err.response.data.message) {
         setError(err.response.data.message)
-        alert(error)
+        toast.error(error)
       } else {
         setError('An error occurred during sign up. Please try again.');
       }

@@ -9,7 +9,8 @@ import axios from "axios"
 import { domain } from "../utils"
 import { useNavigate } from "react-router-dom"
 import { useDispatch } from "react-redux"
-import { authActions } from "../store/store"
+import { AppDispatch, authActions } from "../store/store"
+import { toast } from "react-toastify"
 
 export const Signin = () => {
   const [postInputs, setPostInputs] = useState<SigninSchema>({
@@ -18,7 +19,7 @@ export const Signin = () => {
   })
 
   const navigate = useNavigate();
-  const dispatch = useDispatch();
+  const dispatch = useDispatch<AppDispatch>();
 
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
@@ -41,17 +42,17 @@ export const Signin = () => {
       const response = await axios.post(`${domain}/api/v1/user/signin`, postInputs);
       const data = response.data;
       if(data.token) {
-        navigate('/blogs');
         sessionStorage.setItem("token", data.token);
-        dispatch(authActions.login(data.token))
+        sessionStorage.setItem("user", postInputs.email);
+        dispatch(authActions.login(data.token));
+        navigate('/blogs');
       }
-      // storing token 
       
     } catch(err: any) {
       // catch backend errors
       if(err.response && err.response.data && err.response.data.message) {
         setError(err.response.data.message)  // it will display the error message from backend
-        alert(error)
+        toast(error)
       } else {
         setError("Something went wrong. Please try again later.")
       }
