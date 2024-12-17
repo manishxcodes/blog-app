@@ -27,7 +27,7 @@ export const addBookmark = async (c: Context) => {
         }
         
         // check if its already bookmark
-        const alreadyBookmarked = await prisma.user.findFirst({
+        const alreadyBookmarked = await prisma.user.findUnique({
             where: {
                 id: userId,
             bookmarks: {
@@ -39,7 +39,7 @@ export const addBookmark = async (c: Context) => {
         });
   
         if(alreadyBookmarked) {
-            return c.json({ message: "This blog is already bookmarked"}, 400);
+            return c.json({ message: "This blog is already bookmarked"}, 409);
         }
   
         // add the post to user bookmark
