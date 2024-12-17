@@ -26,7 +26,7 @@ export const Navbar = () => {
     }
 
     return (
-        <nav>
+        <nav className="sticky top-0 z-50 bg-white">
             <div className="flex justify-center items-center mb-4 shadow-[0_3px_10px_rgb(0,0,0,0.2)] border rounded-md">
                 <div className="max-w-7xl w-full h-16 flex items-center justify-between px-6 ">
                     <div>
