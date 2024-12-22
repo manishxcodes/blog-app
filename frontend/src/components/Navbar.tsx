@@ -84,14 +84,14 @@ export const Navbar = () => {
                                 <div className="flex flex-col items-center justify-center ">
                                     {isLoggedIn && 
                                         <ul className="flex flex-col items-center justify-center">
-                                            <li onClick={() => navigateToMainPage(navigate)} className="px-6 py-2 text-black hover:underline cursor-pointer">
+                                            <li onClick={handleClickState} className="px-6 py-2 text-black hover:underline cursor-pointer">
                                                 <Link to="/blogs">Home</Link>
                                             </li>
-                                            <li onClick={() => navigateToMyPosts(navigate)} className="px-6 py-2 text-black hover:underline cursor-pointer">
+                                            <li onClick={handleClickState} className="px-6 py-2 text-black hover:underline cursor-pointer">
                                                 <Link to="/myposts">My Posts</Link>
                                             </li>
-                                            <li onClick={() => navigateToBookmarks(navigate)} className="px-6 py-2 text-black hover:underline cursor-pointer">
-                                                <Link to="bookmarks">Bookmarks</Link>
+                                            <li onClick={handleClickState} className="px-6 py-2 text-black hover:underline cursor-pointer">
+                                                <Link to="/bookmarks">Bookmarks</Link>
                                             </li>
                                         </ul>
                                     }
