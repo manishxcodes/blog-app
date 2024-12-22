@@ -16,10 +16,21 @@ export const Bookmarks = () => {
 
   if(loading) {
     return (
-      <Loader />
+      <div>
+        <Navbar />
+        <Loader />
+      </div>
     )
   }
-  console.log(blogs)
+
+  if(error) {
+    return (
+      <div>
+        <Navbar />
+        <ErrorMessage error={error} />
+      </div>
+    )
+  }
 
   if(blogs.length == 0) {
     return (
@@ -31,13 +42,6 @@ export const Bookmarks = () => {
       </div>
     )
   }
-
-  if(error) {
-    return (
-      <ErrorMessage error={error} />
-    )
-  }
-
   
   const removeBookmark = async (id: string) => {
     try {
