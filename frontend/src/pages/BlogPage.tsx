@@ -26,12 +26,12 @@ export const BlogPage = () => {
     <div>
       <Navbar />
       <div className="flex justify-center items-center font-mono">
-          <div className="max-w-5xl h-screen w-full p-4">
+          <div className="max-w-3xl h-screen w-full p-4">
           <h1 className="font-bold text-2xl md:text-3xl py-2 mb-4">{blog.title}</h1>
           <div className="flex flex-row items-center justify-start mb-2 text-slate-500">
-            <div>{blog.author.name}|</div>
+            <div>{blog.author.name ? `${blog.author.name} | ` : "" }</div>
             
-            <div> {new Date(blog.createdAt).toLocaleDateString()}</div>
+            <div> {blog.createdAt && new Date(blog.createdAt).toLocaleDateString()}</div>
           </div>
           <p className=" mdtext-lg font-mono  text-justify leading-7">{blog.content}</p>
         </div>
