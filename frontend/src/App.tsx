@@ -5,8 +5,9 @@ import { Signin } from './pages/Signin'
 import { Main } from './pages/Main'
 import { Bookmarks } from './pages/Bookmarks'
 import { MyPosts } from './pages/MyPosts'
-import { BlogPage } from './pages/BlogPage'
 import { ToastContainer } from 'react-toastify'
+import { BlogPage } from './pages/BlogPage'
+
 
 function App() {
   return (
