@@ -1,4 +1,4 @@
-import { useEffect, useState, } from "react";
+import { useEffect } from "react";
 import { BlogCard } from "../components/BlogCard"
 import { ErrorMessage } from "../components/ErrorMessage";
 import { Loader } from "../components/Loader";
@@ -23,13 +23,19 @@ export const Main = () => {
  
   if(loading) {
     return (
-      <Loader />
+      <div>
+        <Navbar />
+        <Loader />
+      </div>
     )
   }
 
   if(error) {
     return (
-      <ErrorMessage error={error} />
+      <div>
+        <Navbar />
+        <ErrorMessage error={error} />
+      </div>
     )
   }
 
@@ -53,7 +59,6 @@ export const Main = () => {
 
       if(resposne.status == 200) {
         toast.success("Added to Bookmark");
-        fetchBlogs();
         console.log("bookmark added");
       }
     } catch(err) {
@@ -76,7 +81,6 @@ export const Main = () => {
 
       if(resposne.status == 200) {
         toast.success("Bookmarked removed");
-        fetchBlogs();
       }
 
       if(resposne.status == 400) {
@@ -96,11 +100,12 @@ export const Main = () => {
     <div>
         <Navbar />
         <section className="flex justify-center items-center">
-          <div className=" h-screen max-w-6xl w-full px-6">
+          <div className=" h-screen max-w-6xlflex justify-center px-6 ">
             <div className="grid grid-cols-1 gap-y-3">
               { 
                 blogs.map((blog) => (
                   <BlogCard key={blog.id} 
+                    id={blog.id}
                     authorName={blog.authorName}
                     title={blog.title}
                     content={blog.content}
@@ -109,7 +114,9 @@ export const Main = () => {
                     isAlreadyBookmark={blog.isBookmarked}
                     onReadMoreClick={() => handleReadMore(blog.id)}
                     onCardClick={() => {handleReadMore(blog.id)}}
-                    onBookmarkClick={() => (blog.isBookmarked) ?  removeBookmark(blog.id) : addBookmark(blog.id)} />
+                    onBookmarkClick={() => (blog.isBookmarked) ?  removeBookmark(blog.id) : addBookmark(blog.id)}
+                    removeBookmark = {() => {removeBookmark(blog.id)}} 
+                    addBookmark = {() => {addBookmark(blog.id)}} />
                 ))
               }
           </div>

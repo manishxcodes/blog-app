@@ -84,6 +84,7 @@ export const Bookmarks = () => {
               { 
                 blogs.map((blog) => (
                   <BlogCard key={blog.id} 
+                    id={blog.id}
                     authorName={blog.author.name}
                     title={blog.title}
                     content={blog.content}
@@ -91,6 +92,7 @@ export const Bookmarks = () => {
                     isAlreadyBookmark= {true}
                     onBookmarkClick=  {() =>  removeBookmark(blog.id)}
                     onCardClick={() => handleReadMore(blog.id)}
+                    removeBookmark={() => removeBookmark(blog.id)}
                      />
                 ))
               }
