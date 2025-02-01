@@ -123,7 +123,7 @@ export const BlogCard: React.FC<BlogCardProps> = ({id, authorName, title, conten
             </div>    
             <div className="px-2">
                 <div className="flex justify-between" onClick={onCardClick}>
-                    <div className="mt-2 text-sm font-bold pr-4" >
+                    <div className="mt-2 text-sm font-bold pr-6" >
                         {title}
                     </div>
                     <div className="flex items-center justify-evenly">
