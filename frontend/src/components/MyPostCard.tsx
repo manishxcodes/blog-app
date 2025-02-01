@@ -28,7 +28,7 @@ export const MyPostCard: React.FC<MyPostCardProps> = ({authorName, title, conten
     }
 
     return (
-        <div className=" h-full w-full font-mono py-4 px-2 md:px-8 shadow-[0px_2px_3px_-1px_rgba(0,0,0,0.1),0px_1px_0px_0px_rgba(25,28,33,0.02),0px_0px_0px_1px_rgba(25,28,33,0.08)] cursor-pointer rounded-md
+        <div className=" h-full max-w-3xl font-mono py-4 px-2 md:px-8 shadow-[0px_2px_3px_-1px_rgba(0,0,0,0.1),0px_1px_0px_0px_rgba(25,28,33,0.02),0px_0px_0px_1px_rgba(25,28,33,0.08)] cursor-pointer rounded-md
         hover:shadow-[0_8px_30px_rgb(0,0,0,0.12)]">
             <div className="flex items-center " onClick={onCardClick}>
                 <div> <Avatar name={authorName}/></div>
@@ -37,23 +37,23 @@ export const MyPostCard: React.FC<MyPostCardProps> = ({authorName, title, conten
                 <div className="text-sm"> {createdAt} </div>
             </div>    
             <div className="px-2">
-                <div onClick={onCardClick}>
-                    <div className="mt-2 text-lg font-bold">
+                <div className="flex items-center justify-between" onClick={onCardClick}>
+                    <div className="mt-2 text-sm font-bold pr-6">
                         {title}
                     </div>
-                    <div className="text-slate-600 py-2">
-                        {content.slice(0, 100) + "..."}
+                    <div className="flex items-center">
+                        <ActionButton label={"Read"} textColor={"text-white"} color={"bg-black"} onClick={onClickReadMore}/>
+                        <span className={`ml-3 hover:shadow-[0_8px_30px_rgb(0,0,0,0.12)] hover:rounded-full hover:bg-slate-100  hover:backdrop-blur-xl ${loading ? "animate-pulse" : ""}`}
+                        onClick={handleDelete}>
+                            { deleteLogo }
+                        </span>
                     </div>
                 </div>
                 <div className="mt-4 text-sm flex justify-between">
                     <ActionButton label={`${Math.ceil((content.split(" ").length)/150)} minutes read`} color={"bg-slate-200"} />
                     <div className="flex items-center">
                         
-                        <ActionButton label={"Read More"} textColor={"text-white"} color={"bg-black"} onClick={onClickReadMore}/>
-                        <span className={`ml-3 hover:shadow-[0_8px_30px_rgb(0,0,0,0.12)] hover:rounded-full hover:bg-slate-100  hover:backdrop-blur-xl ${loading ? "animate-pulse" : ""}`}
-                        onClick={handleDelete}>
-                            { deleteLogo }
-                        </span>
+                        
                     </div>
                 </div>
             </div>        
