@@ -79,7 +79,7 @@ export const Bookmarks = () => {
     <div>
       <Navbar />
       <section className="flex justify-center items-center">
-          <div className=" h-screen max-w-6xl w-full px-6">
+          <div className=" max-w-6xl flex justify-between px-6">
             <div className="grid grid-cols-1  gap-y-3">
               { 
                 blogs.map((blog) => (

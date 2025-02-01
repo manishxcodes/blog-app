@@ -100,7 +100,7 @@ export const Main = () => {
     <div>
         <Navbar />
         <section className="flex justify-center items-center">
-          <div className=" h-screen max-w-6xlflex justify-center px-6 ">
+          <div className=" h-screen max-w-6xl flex justify-center px-6 ">
             <div className="grid grid-cols-1 gap-y-3">
               { 
                 blogs.map((blog) => (

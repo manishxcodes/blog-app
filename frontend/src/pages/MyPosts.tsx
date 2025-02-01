@@ -80,7 +80,7 @@ export const MyPosts = () => {
     <div>
       <Navbar />
       <div className="w-full flex justify-center items-center">
-        <div className="max-w-6xl w-full h-screen px-6">
+        <div className="max-w-6xl flex justify-center px-6">
           <div className="grid grid-cols-1 gap-y-3">
             {
               blogs.map((blog) => (
