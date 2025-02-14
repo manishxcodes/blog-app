@@ -9,13 +9,13 @@ export const BlogPage = () => {
   const {id} = useParams();
 
   const { blog, loading, error } = useBlog(id as string);
-  console.log("blog:", blog)
+
   if(error) {
-    <ErrorMessage error={"Something went wrong. Please go back"}  />
+    return <ErrorMessage error={"Something went wrong. Please go back"}  />
   }
 
   if(loading) {
-    <Loader />
+    return <Loader />
   }
 
   if(blog.title == "") {
