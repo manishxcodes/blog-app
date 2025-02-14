@@ -7,6 +7,7 @@ import { Bookmarks } from './pages/Bookmarks'
 import { MyPosts } from './pages/MyPosts'
 import { ToastContainer } from 'react-toastify'
 import { BlogPage } from './pages/BlogPage'
+import { Publish } from './pages/Publish'
 
 
 function App() {
@@ -22,6 +23,7 @@ function App() {
             <Route path='/blog/:id' element={<BlogPage />} />
             <Route path='/bookmarks' element={<Bookmarks />} />
             <Route path='/myposts' element={<MyPosts />} />
+            <Route path='/publish' element={<Publish />} />
           </Routes>
       </BrowserRouter>
     </>
