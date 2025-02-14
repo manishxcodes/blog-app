@@ -54,14 +54,14 @@ export const Navbar = () => {
 
                     {/* shows button when screen width is more than 768px i.e medium  */}
                     <div className="hidden md:flex">
-                        <div className="mr-2">
+                        <div>
+                            <Button label={"Publish"} onClick={() => navigate('/publish')} solid={false} />
+                        </div>
+                        <div className="ml-2">
                             { isLoggedIn 
                             ? <Button label={"Logout"} onClick={hanldeLogout} solid={true} />
                             : <Button label={"Login"} onClick={() => navigateToSignin(navigate)} solid={true} />
                             } 
-                        </div>
-                        <div>
-                            <Button label={"Find me on"} onClick={() => navigateToSignin(navigate)} icon={githubLogo} solid={false} />
                         </div>
                     </div>
 
@@ -101,7 +101,7 @@ export const Navbar = () => {
                                         ? <li onClick={hanldeLogout} className="px-6 py-2 text-black hover:underline cursor-pointer">Logout</li>
                                         : <li onClick={() => navigateToSignin(navigate)} className="px-6 py-2 text-black hover:underline cursor-pointer">Login</li>
                                     }
-                                        <li className="flex px-6 py-2 text-black hover:underline cursor-pointer">Find me on&nbsp;{githubLogo}</li>
+                                        <li className="flex px-6 py-2 text-black hover:underline cursor-pointer" onClick={() => {navigate('/publish')}}>Publish</li>
                                     </ul>
                                 </div>
                             </div>
