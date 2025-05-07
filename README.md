@@ -93,7 +93,7 @@ Logs in a registered user and returns a JWT token.
 {
   "token": "your_jwt_token_here"
 }
-
+```
 ---
 
 ### GET `/api/v1/blog`
