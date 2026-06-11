@@ -127,3 +127,4 @@ export const fetchPost = async (c: Context) => {
         return c.json({error: "Something went wrong. Unable to fetch post", err}, 500)
     }
 }
+

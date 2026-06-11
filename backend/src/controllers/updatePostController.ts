@@ -63,3 +63,4 @@ export const updatePost = async (c: Context) => {
         return c.json({error: "Something went wrong", err}, 500)
     }
 }
+
