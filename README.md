@@ -11,7 +11,6 @@ A modern full-stack blog application where users can sign up, create blogs, expl
 - **Prisma + Accelerate** — Type-safe ORM and accelerated queries
 - **PostgreSQL** — Relational database
 - **JWT Auth** — Secure user authentication
-- **Cloudinary** — Image upload and management
 
 ### Frontend
 - **React** 
